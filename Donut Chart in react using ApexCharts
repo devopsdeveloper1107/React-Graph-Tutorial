@@ -51,6 +51,7 @@ function Donutchart()
                         total:{
                             show:true,
                             showAlways:true,
+                             formatter: () => '343',
                             fontSize:30,
                             color: '#f90000',
                         }
