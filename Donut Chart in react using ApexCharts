@@ -1,47 +1,76 @@
-import React ,{ useState, useEffect} from "react";
-import  Chart  from "react-apexcharts";
-function Piechart()
+import React ,{useState, useEffect}from "react";
+import Chart from 'react-apexcharts';
+
+function Donutchart()
 {
-   const [stdudentSubject, setStudentsubject]= useState([]);
-   const [studentMarks, setStudentMarks]= useState([]);
-   useEffect( ()=>{
-       const sSubject=[];
-       const sMarks=[];
-       const getStudentdata= async()=>{
-       const reqData= await fetch("http://localhost/reactgraphtutorial/marks");
-       const resData= await reqData.json();       
-       for(let i=0; i< resData.length; i++)
-       {
-        sSubject.push(resData[i].subject);
-        sMarks.push(parseInt(resData[i].marks));
-       }
-       setStudentsubject(sSubject);
-       setStudentMarks(sMarks);
-        console.log(resData);      
-       }
-    getStudentdata();
-   },[]);
+    const [contryname, setCountryname]= useState([]);
+    const [medal, setMedal]= useState([]);
+
+    useEffect( ()=>{
+     const getdata= async()=>{
+          const countryname=[];
+          const getmedal=[];
+
+        const reqData= await fetch("http://localhost/reactgraphtutorial/medals"); 
+        const resData= await reqData.json();
+        for(let i=0; i<resData.length; i++)
+        {
+            countryname.push(resData[i].country);
+            getmedal.push(parseInt(resData[i].medals));
+        }
+        setCountryname(countryname);
+        setMedal(getmedal);
+     
+
+     }
+     getdata();
+    },[]);
+
     return(
         <React.Fragment>
-            <div className="container-fluid mb-3">
-                <h3 className="mt-3">Welcome to Piechart </h3>
-                <Chart 
-                type="pie"
-                width={1349}
-                height={750}
-                series={ studentMarks }         
+            <div className='container-fluid mt-3 mb-3'>        
+            <h2 className="text-left">Donut Chart</h2>
+            <Chart 
+            type="donut"
+            width={1349}
+            height={ 550}
+            series={medal}
 
-                 options={{
-                        title:{ text:"Student PieChart"
-                        } , 
-                       noData:{text:"Empty Data"},                        
-                      // colors:["#f90000","#f0f"],
-                      labels:stdudentSubject,            
-                    }}
-                >
-                </Chart>
+            options={{
+             labels:contryname,
+             title:{
+                text:"Medal Country Name",
+               // align:"center",
+             },
+
+             plotOptions:{
+             pie:{
+                donut:{
+                    labels:{
+                        show:true,
+                        total:{
+                            show:true,
+                            showAlways:true,
+                            fontSize:30,
+                            color: '#f90000',
+                        }
+                    }
+                }
+             }
+
+             },
+
+             dataLabels:{
+                enabled:true,
+             }
+
+
+            }}
+            
+            />
+
             </div>
         </React.Fragment>
     );
 }
-export default Piechart;
+export default Donutchart;
